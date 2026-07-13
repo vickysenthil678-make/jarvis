@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. Interface</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- ── PERMISSION GATE (shows first) ── -->
+    <div id="permission-gate">
+        <div class="gate-box">
+            <div class="gate-logo">J.A.R.V.I.S.</div>
+            <div class="gate-subtitle">Just A Rather Very Intelligent System</div>
+            <div id="gate-icon" class="gate-icon">🎙️</div>
+            <p id="gate-msg" class="gate-msg">JARVIS requires microphone access to<br>listen for voice commands.</p>
+            <button id="grant-mic-btn" class="gate-btn">GRANT MICROPHONE ACCESS</button>
+            <div id="gate-error" class="gate-error" style="display:none"></div>
+            <div class="gate-hint">Make sure you are on <strong>localhost:8000</strong> (not 127.0.0.1:8000)</div>
+        </div>
+    </div>
+
+    <!-- ── MAIN JARVIS UI (hidden until mic granted) ── -->
+    <div class="container" id="main-ui" style="display:none">
+        <header>
+            <h1>J.A.R.V.I.S.</h1>
+            <div class="status-indicator" id="status-indicator">
+                <span class="status-dot"></span>
+                <span id="status-text">WAITING</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="mask-container">
+                <svg class="iron-man-mask" id="jarvis-ui" viewBox="0 0 200 250">
+                    <defs>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+                    <g class="hologram" filter="url(#glow)">
+                        <!-- Outer Helmet -->
+                        <path class="helmet-outline" d="M 100 10 C 40 10 20 80 20 130 L 30 190 C 50 230 80 240 100 245 C 120 240 150 230 170 190 L 180 130 C 180 80 160 10 100 10 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <!-- Faceplate outline -->
+                        <path class="faceplate" d="M 60 40 L 140 40 L 160 90 L 150 170 L 120 220 L 80 220 L 50 170 L 40 90 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- Brow ridge -->
+                        <path class="brow" d="M 40 90 L 80 100 L 100 110 L 120 100 L 160 90" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <!-- Cheek plates -->
+                        <path class="cheek" d="M 50 170 L 80 150 L 120 150 L 150 170" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- Nose bridge -->
+                        <path d="M 100 110 L 100 150" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- Eyes - the iconic triangular eye slits -->
+                        <polygon class="eye left-eye" points="55,115 85,110 80,122 60,125" fill="currentColor"/>
+                        <polygon class="eye right-eye" points="145,115 115,110 120,122 140,125" fill="currentColor"/>
+                        <!-- Inner eye glow -->
+                        <polygon class="eye-glow left-eye-glow" points="60,117 82,113 78,120 63,122" fill="white" opacity="0.3"/>
+                        <polygon class="eye-glow right-eye-glow" points="140,117 118,113 122,120 137,122" fill="white" opacity="0.3"/>
+                        <!-- Mouth slit -->
+                        <rect class="mouth" x="73" y="182" width="54" height="5" rx="2" fill="currentColor"/>
+                        <!-- Chin detail -->
+                        <path d="M 80 220 L 100 240 L 120 220" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- Forehead circle sensor -->
+                        <circle cx="100" cy="28" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="100" cy="28" r="3" fill="currentColor" opacity="0.7"/>
+                        <!-- Side horizontal lines -->
+                        <line x1="20" y1="130" x2="42" y2="130" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="180" y1="130" x2="158" y2="130" stroke="currentColor" stroke-width="1.5"/>
+                        <!-- Jaw lines -->
+                        <path d="M 50 195 L 65 205" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                        <path d="M 150 195 L 135 205" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    </g>
+                </svg>
+
+                <!-- Audio visualizer bars below the mask -->
+                <div class="audio-visualizer" id="audio-viz">
+                    <div class="bar" id="b1"></div><div class="bar" id="b2"></div>
+                    <div class="bar" id="b3"></div><div class="bar" id="b4"></div>
+                    <div class="bar" id="b5"></div><div class="bar" id="b6"></div>
+                    <div class="bar" id="b7"></div><div class="bar" id="b8"></div>
+                    <div class="bar" id="b9"></div><div class="bar" id="b10"></div>
+                    <div class="bar" id="b11"></div><div class="bar" id="b12"></div>
+                    <div class="bar" id="b13"></div>
+                </div>
+            </div>
+
+            <div class="transcript-box">
+                <div class="label">TRANSCRIPT</div>
+                <div id="transcript-content" class="content">Say "Jarvis" to wake me...</div>
+            </div>
+
+            <div class="response-box">
+                <div class="label">RESPONSE</div>
+                <div id="response-content" class="content">Systems online. Awaiting wake word "Jarvis".</div>
+            </div>
+        </main>
+
+        <div class="data-streams">
+            <div class="stream stream-left" id="stream-left"></div>
+            <div class="stream stream-right" id="stream-right"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
