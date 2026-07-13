@@ -1,0 +1,6 @@
+{
+  "name": "AI Chat & Search Assistant",
+  "description": "A full-stack AI conversational assistant combining chat, real-time web search grounding, file uploading & processing, and speech-to-text / text-to-speech features.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
